@@ -4,10 +4,13 @@ const cors = require("cors")
 const express = require("express")
 const bodyParser = require('body-parser')
 const jwt = require('jsonwebtoken');
+const https = require('https');
+const http = require('http');
+const fs = require('fs');
 
 
 const app = express()
-const PORT = process.env.PORT || 3000
+//const PORT = process.env.PORT || 3000
 
 app.use(function (req, res, next) {
    res.setHeader('Content-Security-Policy', "default-src 'self'; font-src 'self'; img-src 'self'; script-src 'self'; style-src 'self'; frame-src 'self'");
@@ -57,6 +60,19 @@ app.post('/authorize', (req, res) => {
    }
 });
 
-app.listen(PORT , ()=>{
-     console.log(`STARTED LISTENING ON PORT ${PORT}`)
+const options = {
+   key: fs.readFileSync('taner-key.pem'),
+   cert: fs.readFileSync('taner-cert.pem')
+};
+
+http.createServer(app).listen(3000, function(){
+   console.log('http listening on port 3000')
 });
+
+https.createServer(options, app).listen(443, function(){
+   console.log('https listening on port 443')
+});
+
+/*app.listen(PORT , ()=>{
+     console.log(`STARTED LISTENING ON PORT ${PORT}`)
+});*/
