@@ -7,10 +7,18 @@ const jwt = require('jsonwebtoken');
 const https = require('https');
 const http = require('http');
 const fs = require('fs');
+const auditLog = require('audit-log');
+const mongoose = require('mongoose');
 
 
 const app = express()
 //const PORT = process.env.PORT || 3000
+
+auditLog.addTransport("mongoose", {connectionString: "mongodb://localhost:27017/myDatabase"});
+// either or both -- up to you where your messages are sent!
+auditLog.addTransport("console");
+
+auditLog.logEvent('user id', 'user password', 'user location');
 
 app.use(function (req, res, next) {
    res.setHeader('Content-Security-Policy', "default-src 'self'; font-src 'self'; img-src 'self'; script-src 'self'; style-src 'self'; frame-src 'self'");
