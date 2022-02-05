@@ -1,4 +1,4 @@
-const credentials = {secretUser:"user" , secretPassword:"password"}
+const credentials = {secretUser:"taner" , secretPassword:"tun"}
 
 const cors = require("cors")
 const express = require("express")
